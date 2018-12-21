@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   namespace :web do
-    resources :tests, only: %i[index create]
+    resources :patients, only: %i[index]
   end
 end
