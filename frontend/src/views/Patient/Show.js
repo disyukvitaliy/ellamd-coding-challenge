@@ -17,9 +17,11 @@ class Patient extends Component {
 				<Button bsStyle="link">
 					<Link to="/">Back to list</Link>
 				</Button>
-				<Button className="pull-right" bsStyle="success">
-					Add prescription
-				</Button>
+				<Link to={`/patients/${this.patient.id}/prescriptions/new`}>
+					<Button className="pull-right" bsStyle="success">
+						Add prescription
+					</Button>
+				</Link>
 			</div>
 			<h2>{this.patient.name}'s Prescriptions</h2>
 			<div className="row">

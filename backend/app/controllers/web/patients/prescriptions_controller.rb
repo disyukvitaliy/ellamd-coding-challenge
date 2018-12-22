@@ -20,13 +20,17 @@ class Web::Patients::PrescriptionsController < Web::ApplicationController
   end
 
   def create
+    prescription = Patient.find(params[:patient_id]).prescriptions.new
+
     ActiveRecord::Base.transaction do
-      prescription = Patient.find(params[:patient_id]).prescriptions.new
       form = Web::PrescriptionForm.new(prescription, permitted_params)
       form.validate!
       form.save!
     end
-    head :ok
+
+    render json: prescription,
+      serializer: PrescriptionSerializer,
+      include: [ingredient_relations: :ingredient]
   end
 
   private

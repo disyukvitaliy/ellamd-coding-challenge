@@ -9,6 +9,7 @@ import './App.css';
 class App extends Component {
 	componentDidMount () {
 		Api.get('/patients').then(({data}) => this.props.patientStore.setList(data.patients))
+		Api.get('/ingredients').then(({data}) => this.props.ingredientStore.setList(data.ingredients))
 	}
 
   render() {
@@ -20,4 +21,4 @@ class App extends Component {
   }
 }
 
-export default inject('patientStore')(observer(App));
+export default inject('patientStore', 'ingredientStore')(observer(App));

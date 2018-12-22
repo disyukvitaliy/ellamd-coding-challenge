@@ -3,3 +3,9 @@ main {
   margin: 0 auto;
   padding-top: 15px;
 }
+
+.new-prescription .search-popup {
+  height: 0;
+  position: relative;
+  z-index: 1;
+}
