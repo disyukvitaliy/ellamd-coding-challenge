@@ -4,9 +4,13 @@ import { Button, Panel } from 'react-bootstrap';
 import { inject, observer } from "mobx-react";
 
 class Patient extends Component {
+	get patient () {
+		let id = parseInt(this.props.match.params.id, 10)
+		return this.props.patientStore.list.find(p => p.id === id)
+	}
+
 	render () {
-		let patient = this.props.patientStore.list.find(p => p.id === parseInt(this.props.match.params.id, 10))
-		if (!patient) return null
+		if (!this.patient) return null
 
 		return <div>
 			<div className="row">
@@ -17,11 +21,11 @@ class Patient extends Component {
 					Add prescription
 				</Button>
 			</div>
-			<h2>{patient.name}'s Prescriptions</h2>
+			<h2>{this.patient.name}'s Prescriptions</h2>
 			<div className="row">
-				{patient.prescriptions.map(prescription => <Panel key={prescription.id}>
+				{this.patient.prescriptions.map(prescription => <Panel key={prescription.id}>
 					<Panel.Body>
-						<Link to="/">Prescription #{prescription.id}</Link>
+						<Link to={`/patients/${this.patient.id}/prescriptions/${prescription.id}`}>Prescription #{prescription.id}</Link>
 						<a href={`${window.location.origin}/web/prescriptions/${prescription.id}.pdf`} className="pull-right" target="_blank">PDF</a>
 					</Panel.Body>
 				</Panel>)}
