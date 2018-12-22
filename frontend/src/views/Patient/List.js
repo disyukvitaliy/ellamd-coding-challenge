@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Button, Panel } from 'react-bootstrap';
-import Api from '../../services/api'
+import { inject, observer } from "mobx-react";
 
 
-export default class PatientList extends Component {
-	state = {
-		list: []
-	};
-
-	componentDidMount () {
-		Api.get('/patients')
-			.then(response => this.setState({list: response.data.patients}))
-	}
-
+class PatientList extends Component {
 	render() {
 		return <div>
 			<div className="row">
@@ -22,7 +13,7 @@ export default class PatientList extends Component {
 			<br/>
 			<div className="row">
 				{
-					this.state.list.map(patient => <Panel key={patient.id}>
+					this.props.patientStore.list.map(patient => <Panel key={patient.id}>
 						<Panel.Heading>
 							<Link to={'/patients/' + patient.id}>
 								{patient.name}
@@ -37,3 +28,5 @@ export default class PatientList extends Component {
 		</div>
 	}
 }
+
+export default inject('patientStore')(observer(PatientList));

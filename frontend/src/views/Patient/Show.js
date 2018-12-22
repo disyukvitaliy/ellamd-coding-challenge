@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Button, Panel } from 'react-bootstrap';
+import { inject, observer } from "mobx-react";
 
-export default class Patient extends Component {
-	state = {
-		patient: {
-			name: 'John'
-		}
-	};
+class Patient extends Component {
+	render () {
+		let patient = this.props.patientStore.list.find(p => p.id === parseInt(this.props.match.params.id, 10))
+		if (!patient) return null
 
-	render() {
 		return <div>
 			<div className="row">
 				<Button bsStyle="link">
@@ -19,21 +17,17 @@ export default class Patient extends Component {
 					Add prescription
 				</Button>
 			</div>
-			<h2>{this.state.patient.name}'s Prescriptions</h2>
+			<h2>{patient.name}'s Prescriptions</h2>
 			<div className="row">
-				<Panel>
+				{patient.prescriptions.map(prescription => <Panel key={prescription.id}>
 					<Panel.Body>
-						<Link to="/">Prescription name</Link>
-						<Link className="pull-right" to="/">PDF</Link>
+						<Link to="/">Prescription #{prescription.id}</Link>
+						<a href={`${window.location.origin}/web/prescriptions/${prescription.id}.pdf`} className="pull-right" target="_blank">PDF</a>
 					</Panel.Body>
-				</Panel>
-				<Panel>
-					<Panel.Body>
-						<Link to="/">Prescription name</Link>
-						<Link className="pull-right" to="/">PDF</Link>
-					</Panel.Body>
-				</Panel>
+				</Panel>)}
 			</div>
 		</div>
 	}
 }
+
+export default inject('patientStore')(observer(Patient));
