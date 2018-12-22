@@ -16,9 +16,25 @@ class Search extends Component {
 		)
 	}
 
-	onSelect = (ingredient) => {
+	get matchedFormulations () {
+		if (this.state.searchStr.length < 2) return []
+		let searchStr = this.state.searchStr.toLowerCase()
+		return this.props.formulationStore.list.filter(
+			i => i.name.toLowerCase().includes(searchStr)
+		)
+	}
+
+	onSelectIngredient = (ingredient) => () => {
+		this.onSelect([{...ingredient, percentage: ingredient.minimum_percentage}])
+	}
+
+	onSelectFormulation = (formulation) => () => {
+		this.onSelect(formulation.ingredient_relations.map(ir => ({...ir.ingredient, percentage: ir.percentage})))
+	}
+
+	onSelect = (ingredients) => {
 		this.setState({searchStr: ''})
-		this.props.onSelect(ingredient)
+		this.props.onSelect(ingredients)
 	}
 
 	render () {
@@ -30,22 +46,33 @@ class Search extends Component {
 				onChange={(e) => this.setState({searchStr: e.target.value})}
 			/>
 			{
-				this.matchedIngredients.length > 0 &&
+				(this.matchedIngredients.length > 0 || this.matchedFormulations.length > 0) &&
 				<div className="search-popup">
-					<Panel>
+					{this.matchedIngredients.length > 0 && <Panel>
 						<Panel.Heading><b>Ingredients</b></Panel.Heading>
 						<ListGroup>
 							{this.matchedIngredients.map(ingredient =>
-								<ListGroupItem key={ingredient.id} onClick={() => this.onSelect(ingredient)}>
+								<ListGroupItem key={ingredient.id} onClick={this.onSelectIngredient(ingredient)}>
 									{ingredient.name}<br/>
 									{ingredient.description}
 								</ListGroupItem>)}
 						</ListGroup>
-					</Panel>
+					</Panel>}
+
+					{this.matchedFormulations.length > 0 && <Panel>
+						<Panel.Heading><b>Formulations</b></Panel.Heading>
+						<ListGroup>
+							{this.matchedFormulations.map(formulation =>
+								<ListGroupItem key={formulation.id} onClick={this.onSelectFormulation(formulation)}>
+									{formulation.name}<br/>
+									{formulation.ingredient_relations.map(ir => ir.ingredient.name).join(', ')}
+								</ListGroupItem>)}
+						</ListGroup>
+					</Panel>}
 				</div>
 			}
 		</div>
 	}
 }
 
-export default inject('ingredientStore')(observer(Search));
+export default inject('ingredientStore', 'formulationStore')(observer(Search));

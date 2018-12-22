@@ -16,12 +16,13 @@ class PatientNew extends Component {
 		return this.props.patientStore.list.find(p => p.id === id)
 	}
 
-	onIngredientAdd = (ingredient) => {
+	onIngredientsAdd = (ingredients) => {
+		let selectedIds = this.state.ingredients.map(i => i.id)
+
+		let newIngredients = ingredients.filter(i => !selectedIds.includes((i.id)))
+
 		this.setState({
-			ingredients: this.state.ingredients.concat({
-				...ingredient,
-				percentage: ingredient.minimum_percentage
-			})
+			ingredients: this.state.ingredients.concat(newIngredients)
 		})
 	}
 
@@ -77,7 +78,9 @@ class PatientNew extends Component {
 					bsStyle="success"
 				>Save</Button>
 				<h2>{this.patient.name}'s new prescription</h2>
-				<Search onSelect={this.onIngredientAdd} selectedIngredients={this.state.ingredients}></Search>
+				<Search
+					onSelect={this.onIngredientsAdd}
+					selectedIngredients={this.state.ingredients}/>
 				<br/>
 				<Selected
 					ingredients={this.state.ingredients}
