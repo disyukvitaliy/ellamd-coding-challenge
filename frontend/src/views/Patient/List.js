@@ -8,7 +8,9 @@ class PatientList extends Component {
 	render() {
 		return <div>
 			<div className="row">
-				<Button className="pull-right" bsStyle="success">New prescription</Button>
+				<Link to="/patients/new">
+					<Button className="pull-right" bsStyle="success">New patient</Button>
+				</Link>
 			</div>
 			<br/>
 			<div className="row">

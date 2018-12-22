@@ -2,12 +2,12 @@ class Web::PatientsController < Web::ApplicationController
   def index
     render json: Web::PatientQuery.new(params).call,
       each_serializer: PatientSerializer,
-      include: [ prescriptions: { ingredient_relations: :ingredient } ]
+      include: [prescriptions: { ingredient_relations: :ingredient }]
   end
 
   def create
-    Patient.create!(permitted_params)
-    head :ok
+    patient = Patient.create!(permitted_params)
+    render json: patient, serializer: PatientSerializer, include: %i[prescriptions]
   end
 
   private
