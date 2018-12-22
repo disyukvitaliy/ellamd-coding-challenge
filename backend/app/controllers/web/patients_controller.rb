@@ -1,6 +1,6 @@
 class Web::PatientsController < Web::ApplicationController
   def index
-    render json: Web::PatientQuery.new(params),
+    render json: Web::PatientQuery.new(params).call,
       each_serializer: PatientSerializer,
       include: [ prescriptions: { ingredient_relations: :ingredient } ]
   end
