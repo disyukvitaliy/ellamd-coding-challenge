@@ -100,8 +100,7 @@ GEM
       ttfunk (~> 1.5)
     public_suffix (3.0.2)
     puma (3.11.3)
-    rack (2.0.4)
-    rack-cors (1.0.2)
+    rack (2.2.3)
     rack-test (0.8.3)
       rack (>= 1.0, < 3)
     rails (5.1.5)
@@ -194,7 +193,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   prawn (~> 2.2)
   puma (~> 3.7)
-  rack-cors (~> 1.0)
   rails (~> 5.1.5)
   rspec-rails (~> 3.8)
   selenium-webdriver
