@@ -19,12 +19,16 @@ services:
       - postgres
     environment:
       - DATABASE_URL=postgres
+      - PORT=3000
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=5bf5ae169d6ac6d016991cbc94c787637e5bfddad762c1ed6256d36d6bcb12caebf28c7550108930a53e43aecc14399a76ca97f67c78dcfd590830bcf30889ed
   frontend:
     image: node
     working_dir: /app
-    command: npm start
+    command: npm run build
     volumes:
       - ./frontend:/app
+      - asset-volume:/app/build
   nginx:
     image: nginx
     ports:
@@ -33,4 +37,7 @@ services:
       - backend
       - frontend
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.prod.conf
+      - asset-volume:/build
+volumes:
+  asset-volume:
