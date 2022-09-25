@@ -6,4 +6,6 @@ Rails.application.routes.draw do
       resources :prescriptions, module: :patients, shallow: true, only: %i[show create]
     end
   end
+
+  get '*path', to: 'application#index'
 end
